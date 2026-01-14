@@ -1,0 +1,25 @@
+package com.farmchainx.backend.controller;
+
+@RestController
+@RequestMapping("/retailer")
+public class RetailerController {
+
+    private final RetailerService service;
+
+    public RetailerController(RetailerService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/{id}/profile")
+    public RetailerProfileDTO getProfile(@PathVariable Long id, Authentication auth) {
+        return service.getProfile(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/profile")
+    public String updateProfile(@PathVariable Long id,
+                                @RequestBody ProfileUpdateDTO dto,
+                                Authentication auth) {
+        service.updateProfile(id, auth.getName(), dto);
+        return "Retailer profile updated";
+    }
+}

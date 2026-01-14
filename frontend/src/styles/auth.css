@@ -1,0 +1,14 @@
+.auth-page {
+  min-height: 100vh;
+  background: #2e7d32;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  background: white;
+  padding: 30px;
+  width: 400px;
+  border-radius: 10px;
+}

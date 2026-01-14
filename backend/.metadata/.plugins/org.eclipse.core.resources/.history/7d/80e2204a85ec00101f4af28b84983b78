@@ -1,0 +1,14 @@
+package com.farmchainx.backend.controller;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/{id}/profile")
+    public ProfileResponse getProfile(@PathVariable Long id) {
+        return userService.getProfile(id);
+    }
+}

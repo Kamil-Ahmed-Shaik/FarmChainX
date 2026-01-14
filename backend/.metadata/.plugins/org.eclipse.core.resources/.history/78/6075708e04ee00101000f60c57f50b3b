@@ -1,0 +1,25 @@
+package com.farmchainx.backend.controller;
+
+@RestController
+@RequestMapping("/distributor")
+public class DistributorController {
+
+    private final DistributorService service;
+
+    public DistributorController(DistributorService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/{id}/profile")
+    public DistributorProfileDTO getProfile(@PathVariable Long id, Authentication auth) {
+        return service.getProfile(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/profile")
+    public String updateProfile(@PathVariable Long id,
+                                @RequestBody ProfileUpdateDTO dto,
+                                Authentication auth) {
+        service.updateProfile(id, auth.getName(), dto);
+        return "Distributor profile updated";
+    }
+}

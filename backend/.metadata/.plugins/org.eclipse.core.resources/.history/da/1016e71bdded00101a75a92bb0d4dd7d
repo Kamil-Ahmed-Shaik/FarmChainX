@@ -1,0 +1,42 @@
+package com.farmchainx.backend.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.farmchainx.backend.entity.Farmer;
+import com.farmchainx.backend.repository.FarmerRepository;
+
+@RestController
+@RequestMapping("/admin")
+@CrossOrigin
+public class AdminController {
+	@Autowired
+	FarmerRepository farmerRepo;
+
+	@GetMapping("/inbording")
+	public List<Farmer> getPendingFarmers() {
+	    return farmerRepo.findByStatus("PENDING");
+	}
+
+	@PostMapping("/inbording/{id}/approve")
+	public void approve(@PathVariable Long id) {
+	    Farmer f = farmerRepo.findById(id).orElseThrow();
+	    f.setStatus("APPROVED");
+	    farmerRepo.save(f);
+	}
+
+	@PostMapping("/admin/inbording/{id}/reject")
+	public void reject(@PathVariable Long id) {
+	    Farmer f = farmerRepo.findById(id).orElseThrow();
+	    f.setStatus("REJECTED");
+	    farmerRepo.save(f);
+	}
+
+}

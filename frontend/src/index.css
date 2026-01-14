@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+
+.header a {
+  margin-left: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+/* HOME */
+.home {
+  height: 100vh;
+  background: url("/farm-bg.png") no-repeat center/cover;
+}
+
+/* AUTH PAGES */
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #2e7d32, #66bb6a);
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 70px);
+}
+
+.auth-card {
+  background: white;
+  padding: 30px;
+  width: 420px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-card h2 {
+  text-align: center;
+  color: #2e7d32;
+}
+
+input, select, button {
+  padding: 10px;
+  font-size: 15px;
+}
+
+button {
+  background: #2e7d32;
+  color: white;
+  border: none;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+
+/* DASHBOARD */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+aside {
+  width: 20%;
+  background: #1b5e20;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+aside a {
+  color: white;
+  margin: 10px 0;
+}
+
+main {
+  width: 80%;
+  padding: 30px;
+  background: #f4f6f8;
+}

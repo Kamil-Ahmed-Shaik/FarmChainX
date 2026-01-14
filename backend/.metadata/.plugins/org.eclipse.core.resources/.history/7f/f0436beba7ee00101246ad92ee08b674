@@ -1,0 +1,64 @@
+package com.farmchainx.backend.service;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+
+import com.farmchainx.backend.dto.DistributorProfileDTO;
+import com.farmchainx.backend.dto.ProfileUpdateDTO;
+import com.farmchainx.backend.entity.Distributor;
+import com.farmchainx.backend.entity.User;
+import com.farmchainx.backend.repository.DistributorRepository;
+import com.farmchainx.backend.repository.UserRepository;
+
+@Service
+public class DistributorService {
+
+    private final DistributorRepository distributorRepo;
+    private final UserRepository userRepo;
+
+    public DistributorService(DistributorRepository distributorRepo,
+                              UserRepository userRepo) {
+        this.distributorRepo = distributorRepo;
+        this.userRepo = userRepo;
+    }
+
+    // GET /distributor/{id}/profile
+    public DistributorProfileDTO getProfile(Long id, String username) {
+
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUsername().equals(username)) {
+            throw new AccessDeniedException("Not your profile");
+        }
+
+        Distributor d = distributorRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Distributor not found"));
+
+        DistributorProfileDTO dto = new DistributorProfileDTO();
+        dto.setCompanyName(d.getCompanyName());
+        dto.setRegion(d.getRegion());
+
+        return dto;
+    }
+
+    // POST /distributor/{id}/profile
+    public Distributor updateProfile(Long id, String username, Distributor dto) {
+
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUsername().equals(username)) {
+            throw new AccessDeniedException("Not your profile");
+        }
+
+        Distributor d = distributorRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Distributor not found"));
+
+        d.setCompanyName(dto.getCompanyName());
+        d.setRegion(dto.getRegion());
+
+        distributorRepo.save(d);
+        return d;
+    }
+}

@@ -1,0 +1,55 @@
+package com.farmchainx.backend.controller;
+
+@RestController
+@RequestMapping("/api/profile")
+public class ProfileController {
+
+    @Autowired private UserRepository userRepo;
+    @Autowired private FarmerRepository farmerRepo;
+    @Autowired private DistributorRepository distributorRepo;
+    @Autowired private RetailerRepository retailerRepo;
+    @Autowired private AdminRepository adminRepo;
+
+    @GetMapping
+    public ResponseEntity<?> getProfile(Authentication auth) {
+
+        String username = auth.getName();
+
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Map<String, Object> profile = new HashMap<>();
+        profile.put("username", user.getUsername());
+        profile.put("role", user.getRole());
+
+        switch (user.getRole()) {
+
+            case "FARMER" -> {
+                Farmer f = farmerRepo.findById(user.getId()).orElseThrow();
+                profile.put("farmName", f.getFarmName());
+                profile.put("cropType", f.getCropType());
+                profile.put("location", f.getLocation());
+                profile.put("farmLocation", f.getFarmLocation());
+            }
+
+            case "DISTRIBUTOR" -> {
+                Distributor d = distributorRepo.findById(user.getId()).orElseThrow();
+                profile.put("companyName", d.getCompanyName());
+                profile.put("region", d.getRegion());
+            }
+
+            case "RETAILER" -> {
+                Retailer r = retailerRepo.findById(user.getId()).orElseThrow();
+                profile.put("shopName", r.getShopName());
+                profile.put("location", r.getLocation());
+            }
+
+            case "ADMIN" -> {
+                Admin a = adminRepo.findById(user.getId()).orElseThrow();
+                profile.put("department", a.getDepartment());
+            }
+        }
+
+        return ResponseEntity.ok(profile);
+    }
+}

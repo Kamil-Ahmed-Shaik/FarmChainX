@@ -1,0 +1,36 @@
+package com.farmchainx.backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.farmchainx.backend.model.Farmer;
+import com.farmchainx.backend.repository.FarmerRepository;
+
+@Service
+public class AdminInbordingService {
+
+    private final FarmerRepository farmerRepo;
+
+    public AdminInbordingService(FarmerRepository farmerRepo) {
+        this.farmerRepo = farmerRepo;
+    }
+
+    public List<Farmer> getPendingFarmers() {
+        return farmerRepo.findByStatus("PENDING");
+    }
+
+    public void approveFarmer(Long id) {
+        Farmer farmer = farmerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Farmer not found"));
+        farmer.setStatus("APPROVED");
+        farmerRepo.save(farmer);
+    }
+
+    public void rejectFarmer(Long id) {
+        Farmer farmer = farmerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Farmer not found"));
+        farmer.setStatus("REJECTED");
+        farmerRepo.save(farmer);
+    }
+}

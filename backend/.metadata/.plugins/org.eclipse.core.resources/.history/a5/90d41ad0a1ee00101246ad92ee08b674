@@ -1,0 +1,18 @@
+package com.farmchainx.backend.dto;
+
+public class DistributorProfileDTO {
+    private String companyName;
+    private String region;
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	public String getRegion() {
+		return region;
+	}
+	public void setRegion(String region) {
+		this.region = region;
+	}
+}

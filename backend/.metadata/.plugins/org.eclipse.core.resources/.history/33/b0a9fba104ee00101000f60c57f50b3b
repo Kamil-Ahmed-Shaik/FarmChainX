@@ -1,0 +1,28 @@
+package com.farmchainx.backend.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/farmer")
+public class FarmerController {
+
+    private final FarmerService farmerService;
+
+    public FarmerController(FarmerService farmerService) {
+        this.farmerService = farmerService;
+    }
+
+    @GetMapping("/{id}/profile")
+    public FarmerProfileDTO getProfile(@PathVariable Long id, Authentication auth) {
+        return farmerService.getProfile(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/profile")
+    public String updateProfile(@PathVariable Long id,
+                                @RequestBody ProfileUpdateDTO dto,
+                                Authentication auth) {
+        farmerService.updateProfile(id, auth.getName(), dto);
+        return "Farmer profile updated successfully";
+    }
+}

@@ -1,0 +1,6 @@
+package com.farmchainx.backend.dto;
+
+public class DistributorProfileDTO {
+    private String companyName;
+    private String region;
+}

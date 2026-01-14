@@ -1,0 +1,63 @@
+package com.farmchainx.backend.service;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+
+import com.farmchainx.backend.dto.RetailerProfileDTO;
+import com.farmchainx.backend.entity.Retailer;
+import com.farmchainx.backend.entity.User;
+import com.farmchainx.backend.repository.RetailerRepository;
+import com.farmchainx.backend.repository.UserRepository;
+
+@Service
+public class RetailerService {
+
+    private final RetailerRepository retailerRepo;
+    private final UserRepository userRepo;
+
+    public RetailerService(RetailerRepository retailerRepo,
+                           UserRepository userRepo) {
+        this.retailerRepo = retailerRepo;
+        this.userRepo = userRepo;
+    }
+
+    // GET /retailer/{id}/profile
+    public RetailerProfileDTO getProfile(Long id, String username) {
+
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUsername().equals(username)) {
+            throw new AccessDeniedException("Not your profile");
+        }
+
+        Retailer r = retailerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+
+        RetailerProfileDTO dto = new RetailerProfileDTO();
+        dto.setShopName(r.getShopName());
+        dto.setLocation(r.getLocation());
+
+        return dto;
+    }
+
+    // POST /retailer/{id}/profile
+    public Retailer updateProfile(Long id, String username, RetailerProfileDTO dto) {
+
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUsername().equals(username)) {
+            throw new AccessDeniedException("Not your profile");
+        }
+
+        Retailer r = retailerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+
+        r.setShopName(dto.getShopName());
+        r.setLocation(dto.getLocation());
+
+        retailerRepo.save(r);
+        return r;
+    }
+}

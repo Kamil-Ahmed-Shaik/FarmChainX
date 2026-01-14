@@ -1,0 +1,10 @@
+package com.farmchainx.backend.dto;
+
+public class AdminUserViewDTO {
+
+    private Long userId;
+    private String username;
+    private String role;
+    private String status;   // only for farmers
+    private String details;  // short description
+}

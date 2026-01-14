@@ -1,0 +1,80 @@
+package com.farmchainx.backend.service;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+
+import com.farmchainx.backend.dto.FarmerProfileDTO;
+import com.farmchainx.backend.entity.Farmer;
+import com.farmchainx.backend.entity.User;
+import com.farmchainx.backend.repository.FarmerRepository;
+import com.farmchainx.backend.repository.UserRepository;
+
+@Service
+public class FarmerService {
+
+    private final FarmerRepository farmerRepo;
+    private final UserRepository userRepo;
+
+    public FarmerService(FarmerRepository farmerRepo, UserRepository userRepo) {
+        this.farmerRepo = farmerRepo;
+        this.userRepo = userRepo;
+    }
+
+    public FarmerProfileDTO getProfile(Long id, String username) {
+
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getUsername().equals(username)) {
+            throw new AccessDeniedException("Not your profile");
+        }
+
+        Farmer f = farmerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Farmer not found"));
+
+        FarmerProfileDTO fdto=new FarmerProfileDTO();
+        fdto.setRole(user.getRole());
+		fdto.setAcres(f.getAcres());
+		fdto.setCropType(f.getCropType());
+		fdto.setExpectedYield(f.getExpectedYield());
+		fdto.setFarmLocation(f.getFarmLocation());
+		fdto.setFarmName(f.getFarmName());
+		fdto.setLandPhoto(f.getLandPhoto());
+		fdto.setLatitude(f.getLatitude());
+		fdto.setLocation(f.getLocation());
+		fdto.setLongitude(f.getLongitude());
+		fdto.setMobile(f.getMobile());
+		fdto.setStatus(f.getStatus());
+		fdto.setAadhar(f.getAadhar());
+		fdto.setSoil_type(f.getSoil_type());
+		return fdto;
+    }
+
+    public Farmer updateProfile(Long id, String username, FarmerProfileDTO dto) {
+
+        User user = userRepo.findById(id).orElseThrow();
+        if (!user.getUsername().equals(username)) {
+            throw new AccessDeniedException("Not your profile");
+        }
+
+        Farmer f = farmerRepo.findById(id).orElseThrow();
+        
+        f.setFarmName(dto.getFarmName());
+        f.setFarmLocation(dto.getFarmLocation());
+        f.setLocation(dto.getLocation());
+        f.setCropType(dto.getCropType());
+        f.setMobile(dto.getMobile());
+        f.setAcres(dto.getAcres());
+        f.setExpectedYield(dto.getExpectedYield());
+        f.setLatitude(dto.getLatitude());
+        f.setLongitude(dto.getLongitude());
+        f.setLandPhoto(dto.getLandPhoto());
+        f.setAadhar(dto.getAadhar());
+        f.setSoil_type(dto.getSoil_type());
+        f.setStatus("PENDING");  // reset approval
+
+        farmerRepo.save(f);
+        return f;
+        
+    }
+}

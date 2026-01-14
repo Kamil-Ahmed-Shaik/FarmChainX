@@ -1,0 +1,45 @@
+package com.farmchainx.backend.service;
+
+@Service
+public class UserService {
+
+    @Autowired private UserRepository userRepo;
+    @Autowired private FarmerRepository farmerRepo;
+    @Autowired private DistributorRepository distributorRepo;
+    @Autowired private RetailerRepository retailerRepo;
+    @Autowired private AdminRepository adminRepo;
+
+    public ProfileResponse getProfile(Long id) {
+        User user = userRepo.findById(id).orElseThrow();
+
+        ProfileResponse res = new ProfileResponse();
+        res.setUserId(user.getId());
+        res.setUsername(user.getUsername());
+        res.setRole(user.getRole());
+
+        switch (user.getRole()) {
+            case "FARMER" -> {
+                Farmer f = farmerRepo.findById(id).orElseThrow();
+                res.setFarmName(f.getFarmName());
+                res.setCropType(f.getCropType());
+                res.setLocation(f.getLocation());
+            }
+            case "DISTRIBUTOR" -> {
+                Distributor d = distributorRepo.findById(id).orElseThrow();
+                res.setCompanyName(d.getCompanyName());
+                res.setRegion(d.getRegion());
+            }
+            case "RETAILER" -> {
+                Retailer r = retailerRepo.findById(id).orElseThrow();
+                res.setShopName(r.getShopName());
+                res.setLocation(r.getLocation());
+            }
+            case "ADMIN" -> {
+                Admin a = adminRepo.findById(id).orElseThrow();
+                res.setDepartment(a.getDepartment());
+            }
+        }
+
+        return res;
+    }
+}

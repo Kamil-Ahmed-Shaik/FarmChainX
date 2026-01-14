@@ -1,0 +1,18 @@
+package com.farmchainx.backend.service;
+
+import com.farmchainx.backend.dto.ProfileUpdateDTO;
+import com.farmchainx.backend.dto.RetailerProfileDTO;
+
+public class RetailerService {
+
+	public RetailerProfileDTO getProfile(Long id, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updateProfile(Long id, String name, ProfileUpdateDTO dto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

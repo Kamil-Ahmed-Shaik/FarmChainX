@@ -1,0 +1,36 @@
+package com.farmchainx.backend.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.farmchainx.backend.entity.Farmer;
+import com.farmchainx.backend.service.AdminInbordingService;
+
+@RestController
+@RequestMapping("/admin/inbording")
+public class AdminController {
+
+    private final AdminInbordingService inbordingService;
+
+    public AdminController(AdminInbordingService inbordingService) {
+        this.inbordingService = inbordingService;
+    }
+
+    @GetMapping
+    public List<Farmer> getPendingFarmers() {
+        return inbordingService.getPendingFarmers();
+    }
+
+    @PostMapping("/{id}/approve")
+    public String approve(@PathVariable Long id) {
+        inbordingService.approveFarmer(id);
+        return "Farmer approved successfully";
+    }
+
+    @PostMapping("/{id}/reject")
+    public String reject(@PathVariable Long id) {
+        inbordingService.rejectFarmer(id);
+        return "Farmer rejected successfully";
+    }
+}
