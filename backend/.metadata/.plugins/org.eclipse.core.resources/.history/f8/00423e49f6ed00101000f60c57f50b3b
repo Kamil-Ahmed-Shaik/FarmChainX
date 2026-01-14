@@ -1,6 +1,0 @@
-package com.farmchainx.backend.dto;
-
-public class RetailerProfileDTO {
-    private String shopName;
-    private String location;
-}
