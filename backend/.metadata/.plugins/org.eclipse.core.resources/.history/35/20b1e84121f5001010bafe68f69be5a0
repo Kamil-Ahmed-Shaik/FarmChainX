@@ -1,0 +1,19 @@
+package com.farmchainx.backend.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "ownership_history")
+public class OwnershipHistory {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long cropId;
+    private String ownerRole;   // FARMER / DISTRIBUTOR / RETAILER
+    private Long ownerId;
+    private String timestamp;
+
+    // Getters & Setters
+}

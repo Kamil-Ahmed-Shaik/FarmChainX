@@ -1,0 +1,22 @@
+package com.farmchainx.backend.controller;
+
+import org.springframework.web.bind.annotation.*;
+import com.farmchainx.backend.service.CropService;
+
+@RestController
+@RequestMapping("/admin/crops")
+@CrossOrigin
+public class AdminCropController {
+
+    private final CropService cropService;
+
+    public AdminCropController(CropService cropService) {
+        this.cropService = cropService;
+    }
+
+    @PostMapping("/{cropId}/verify")
+    public String verify(@PathVariable Long cropId) {
+        cropService.verifyCrop(cropId);
+        return "Crop verified";
+    }
+}

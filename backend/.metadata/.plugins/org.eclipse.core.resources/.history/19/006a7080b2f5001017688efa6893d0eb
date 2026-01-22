@@ -1,0 +1,9 @@
+package com.farmchainx.backend.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.farmchainx.backend.entity.Crop;
+import java.util.List;
+
+public interface CropRepository extends JpaRepository<Crop, Long> {
+    List<Crop> findByFarmerId(Long farmerId);
+}

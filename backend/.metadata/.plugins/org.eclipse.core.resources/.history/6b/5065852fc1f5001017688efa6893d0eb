@@ -1,0 +1,95 @@
+package com.farmchainx.backend.service;
+
+import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.farmchainx.backend.dto.*;
+import com.farmchainx.backend.entity.*;
+import com.farmchainx.backend.repository.*;
+
+@Service
+public class CropService {
+
+    private final CropRepository cropRepo;
+    private final OwnershipHistoryRepository historyRepo;
+    private final BlockchainService blockchainService;
+    private final UserRepository userRepo;
+
+    public CropService(CropRepository cropRepo,
+                       OwnershipHistoryRepository historyRepo,
+                       BlockchainService blockchainService,
+                       UserRepository userrepo) {
+        this.cropRepo = cropRepo;
+        this.historyRepo = historyRepo;
+        this.blockchainService = blockchainService;
+        this.userRepo=userrepo;
+    }
+
+    // Farmer adds crop
+    public Crop addCrop(Long farmerId, CropRequestDTO dto) {
+
+        String hash = blockchainService.registerCropOnBlockchain(dto.getCropName(), farmerId.toString());
+        
+
+        Crop crop = new Crop();
+        crop.setFarmerId(farmerId);
+        crop.setCropName(dto.getCropName());
+        crop.setQuantity(dto.getQuantity());
+        crop.setHarvestDate(dto.getHarvestDate());
+        crop.setQualityGrade(dto.getQualityGrade());
+        crop.setBlockchainHash(hash);
+        crop.setStatus("PENDING");
+
+        cropRepo.save(crop);
+
+        OwnershipHistory history = new OwnershipHistory();
+        User user = userRepo.findById(farmerId).orElseThrow();
+        history.setCropId(crop.getId());
+        history.setOwnerRole("FARMER");
+        history.setOwnerId(farmerId);
+        history.setUsername(user.getUsername());
+        history.setTimestamp(LocalDateTime.now().toString());
+
+        historyRepo.save(history);
+
+        return crop;
+    }
+    
+    public List<Crop> getPendingCrops() {
+        return cropRepo.findByStatus("PENDING");
+    }
+    public List<Crop> getVerfiedCrops() {
+        return cropRepo.findByStatus("VERIFIED");
+    }
+    
+    // View farmer crops
+    public List<Crop> getFarmerCrops(Long farmerId) {
+        return cropRepo.findByFarmerId(farmerId);
+    }
+
+    // Admin verify
+    public void verifyCrop(Long cropId) {
+        Crop crop = cropRepo.findById(cropId).orElseThrow();
+        crop.setStatus("VERIFIED");
+        cropRepo.save(crop);
+    }
+
+    // Ownership transfer
+    public void transferOwnership(Long cropId, String role, Long ownerId) {
+
+        blockchainService.transferOwnership(cropId, role);
+
+        OwnershipHistory history = new OwnershipHistory();
+        history.setCropId(cropId);
+        history.setOwnerRole(role);
+        history.setOwnerId(ownerId);
+        history.setTimestamp(LocalDateTime.now().toString());
+
+        historyRepo.save(history);
+    }
+
+    public List<OwnershipHistory> getTrace(Long cropId) {
+        return historyRepo.findByCropId(cropId);
+    }
+}

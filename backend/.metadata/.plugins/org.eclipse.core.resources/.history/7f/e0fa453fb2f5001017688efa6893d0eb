@@ -1,0 +1,104 @@
+package com.farmchainx.backend.controller;
+
+import java.nio.file.AccessDeniedException;
+import java.util.List;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.farmchainx.backend.dto.AdminProfileDTO;
+import com.farmchainx.backend.dto.FarmerProfileDTO;
+import com.farmchainx.backend.dto.ProfileUpdateDTO;
+import com.farmchainx.backend.entity.Farmer;
+import com.farmchainx.backend.service.AdminService;
+import com.farmchainx.backend.service.CropService;
+
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final AdminService adminService;
+    private final CropService cropService;
+
+    public AdminController(AdminService adminService,CropService cropService) {
+        this.adminService = adminService;
+        this.cropService=cropService;
+    }
+
+    // Admin profile
+    @GetMapping("/{id}/profile")
+    public AdminProfileDTO getProfile(@PathVariable Long id, Authentication auth) throws AccessDeniedException {
+        return adminService.getProfile(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/profile")
+    public AdminProfileDTO updateProfile(@PathVariable Long id,
+                                @RequestBody AdminProfileDTO dto,
+                                Authentication auth) {
+        return adminService.updateProfile(id, auth.getName(), dto);
+    }
+
+    // User management
+    @GetMapping("/users")
+    public List<ProfileUpdateDTO> getAllUsers() {
+        return adminService.getAllUsers();
+    }
+    
+    @PostMapping("/users/{id}/block")
+    public String block(@PathVariable Long id) {
+        adminService.blockUser(id);
+        return "User blocked";
+    }
+
+    @PostMapping("/users/{id}/unblock")
+    public String unblock(@PathVariable Long id) {
+        adminService.unblockUser(id);
+        return "User unblocked";
+    }
+    @GetMapping("/users/{id}/verify")
+    public ProfileUpdateDTO verifyUser(
+            @PathVariable Long id) {
+
+        return adminService.getUserByRole(id);
+    }
+
+    // Inbording
+    @GetMapping("/inbording")
+    public List<Farmer> getPendingFarmers() {
+        return adminService.getPendingFarmers();
+    }
+
+    @GetMapping("/inbording/{id}/verify")
+    public FarmerProfileDTO verify(@PathVariable Long id) {
+        return adminService.verifyFarmer(id);
+    }
+
+    @PostMapping("/inbording/{id}/approve")
+    public String approve(@PathVariable Long id) {
+        adminService.approveFarmer(id);
+        return "Farmer approved";
+    }
+
+    @PostMapping("/inbording/{id}/reject")
+    public String reject(@PathVariable Long id) {
+        adminService.rejectFarmer(id);
+        return "Farmer rejected";
+    }
+    
+    @GetMapping("/crops")
+    public List<Farmer> allpendingcrops() {
+        return cropService.getFarmerCrops((Long)62);
+    }
+    
+    @PostMapping("/crops/{cropId}/verify")
+    public String verifycrop(@PathVariable Long cropId) {
+        cropService.verifyCrop(cropId);
+        return "Crop verified";
+    }
+
+}

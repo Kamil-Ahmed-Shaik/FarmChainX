@@ -1,0 +1,23 @@
+package com.farmchainx.backend.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "crops")
+public class Crop {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long farmerId;
+    private String cropName;
+    private Double quantity;
+    private String harvestDate;
+    private String qualityGrade;
+
+    private String blockchainHash;   // Immutable record
+    private String status;           // PENDING / VERIFIED / SOLD
+
+    // Getters & Setters
+}

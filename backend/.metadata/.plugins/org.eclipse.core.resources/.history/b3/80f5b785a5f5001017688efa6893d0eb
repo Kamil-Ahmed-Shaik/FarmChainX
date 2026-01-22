@@ -1,0 +1,30 @@
+package com.farmchainx.backend.controller;
+
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+import com.farmchainx.backend.dto.*;
+import com.farmchainx.backend.entity.Crop;
+import com.farmchainx.backend.service.CropService;
+
+@RestController
+@RequestMapping("/farmer/crops")
+@CrossOrigin
+public class FarmerCropController {
+
+    private final CropService cropService;
+
+    public FarmerCropController(CropService cropService) {
+        this.cropService = cropService;
+    }
+
+    @PostMapping("/{farmerId}")
+    public Crop addCrop(@PathVariable Long farmerId, @RequestBody CropRequestDTO dto) {
+        return cropService.addCrop(farmerId, dto);
+    }
+
+    @GetMapping("/{farmerId}")
+    public List<Crop> getFarmerCrops(@PathVariable Long farmerId) {
+        return cropService.getFarmerCrops(farmerId);
+    }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="false"/>
+		<list key="findhistory">
+			<item value="getFarmerCrops"/>
+			<item value="getfa"/>
+			<item value="username"/>
+			<item value="ProfileUpdateDTO"/>
+			<item value="userName"/>
+			<item value="status"/>
+			<item value="fromEntity"/>
+			<item value="entity"/>
+			<item value="userRepo"/>
+			<item value=".orElseThrow(() -&gt; new RuntimeException"/>
+			<item value=".orElseThrow(() -&gt; new RuntimeException(&quot;User not registered&quot;));"/>
+			<item value="throw new RuntimeException(&quot;Invalid credentials&quot;);"/>
+			<item value=".hasRole(&quot;ROLE_FARMER&quot;)"/>
+			<item value=".hasRole(&quot;FARMER&quot;)"/>
+			<item value="user.setRole(&quot;ROLE_&quot; + request.getRole().toUpperCase());"/>
+		</list>
+	</section>
+</section>

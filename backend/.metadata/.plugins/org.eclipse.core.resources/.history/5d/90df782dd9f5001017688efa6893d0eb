@@ -1,0 +1,18 @@
+package com.farmchainx.backend.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.farmchainx.backend.entity.Crop;
+import java.util.List;
+
+public interface CropRepository extends JpaRepository<Crop, Long> {
+
+    List<Crop> findByFarmerId(Long farmerId);
+
+    List<Crop> findByStatus(String status);
+
+    @Query("SELECT c FROM Crop c WHERE c.farmerId <> :farmerId AND c.status = 'PENDING'")
+    List<Crop> findCropsNotOwned(@Param("farmerId") Long farmerId);
+}

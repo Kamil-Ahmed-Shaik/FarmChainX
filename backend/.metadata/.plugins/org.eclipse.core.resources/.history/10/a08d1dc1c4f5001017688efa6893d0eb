@@ -1,0 +1,62 @@
+package com.farmchainx.backend.controller;
+
+import java.util.List;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.farmchainx.backend.dto.CropRequestDTO;
+import com.farmchainx.backend.dto.FarmerProfileDTO;
+import com.farmchainx.backend.entity.Crop;
+import com.farmchainx.backend.service.CropService;
+import com.farmchainx.backend.service.FarmerService;
+
+@RestController
+@RequestMapping("/farmer")
+public class FarmerController {
+
+    private final FarmerService farmerService;
+    private final CropService cropService;
+
+    public FarmerController(FarmerService farmerService,CropService cropService) {
+    	this.cropService=cropService;
+        this.farmerService = farmerService;
+    }
+
+    @GetMapping("/{id}/profile")
+    public FarmerProfileDTO getProfile(@PathVariable Long id, Authentication auth) {
+        return farmerService.getProfile(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/profile")
+    public FarmerProfileDTO updateProfile(@PathVariable Long id,
+                                @RequestBody FarmerProfileDTO dto,
+                                Authentication auth) {
+        return farmerService.updateProfile(id, auth.getName(), dto);
+    }
+    @PostMapping("/crops/{farmerId}")
+    public Crop addCrop(@PathVariable Long farmerId, @RequestBody CropRequestDTO dto) {
+        return cropService.addCrop(farmerId, dto);
+    }
+
+    @GetMapping("/crops/{farmerId}")
+    public List<Crop> getFarmerCrops(@PathVariable Long farmerId) {
+        return cropService.getFarmerCrops(farmerId);
+    }
+    @GetMapping("/buy/crops/{farmerId}")
+    public List<Crop> getAllCrops(@PathVariable Long farmerId) {
+        return cropService.getFarmerCrops(farmerId);
+    }
+    @PostMapping("/transfer/{cropId}/{farmerId}")
+    public String transferToRetailer(@PathVariable Long cropId,
+                                     @PathVariable Long farmerId) {
+
+        cropService.transferOwnership(cropId, "FARMER", farmerId);
+        return "Crop ownership transferred to Retailer successfully";
+    }
+}

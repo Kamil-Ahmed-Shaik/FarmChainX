@@ -1,0 +1,24 @@
+package com.farmchainx.backend.controller;
+
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+import com.farmchainx.backend.entity.OwnershipHistory;
+import com.farmchainx.backend.service.CropService;
+
+@RestController
+@RequestMapping("/trace")
+@CrossOrigin
+public class TraceController {
+
+    private final CropService cropService;
+    
+
+    public TraceController(CropService cropService) {
+        this.cropService = cropService;
+    }
+    @GetMapping("/{cropId}")
+    public List<OwnershipHistory> trace(@PathVariable Long cropId) {
+        return cropService.getTrace(cropId);
+    }
+}

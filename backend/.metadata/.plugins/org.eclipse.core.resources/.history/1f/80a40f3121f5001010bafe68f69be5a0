@@ -1,0 +1,8 @@
+package com.farmchainx.backend.dto;
+
+public class CropRequestDTO {
+    private String cropName;
+    private Double quantity;
+    private String harvestDate;
+    private String qualityGrade;
+}

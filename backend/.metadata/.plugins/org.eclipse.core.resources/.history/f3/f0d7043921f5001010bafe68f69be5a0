@@ -1,0 +1,10 @@
+package com.farmchainx.backend.dto;
+
+public class CropResponseDTO {
+    private Long id;
+    private String cropName;
+    private Double quantity;
+    private String harvestDate;
+    private String blockchainHash;
+    private String status;
+}

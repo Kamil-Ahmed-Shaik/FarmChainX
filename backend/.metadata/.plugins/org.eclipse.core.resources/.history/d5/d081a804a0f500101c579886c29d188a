@@ -1,0 +1,44 @@
+package com.farmchainx.backend.controller;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.farmchainx.backend.dto.DistributorProfileDTO;
+import com.farmchainx.backend.service.DistributorService;
+
+@RestController
+@RequestMapping("/distributor")
+public class DistributorController {
+
+    private final DistributorService service;
+    private final CropService cropService;
+
+    public DistributorController(DistributorService service,CropService cropService) {
+        this.service = service;
+        this.cropService = cropService;
+    }
+
+    @GetMapping("/{id}/profile")
+    public DistributorProfileDTO getProfile(@PathVariable Long id, Authentication auth) {
+        return service.getProfile(id, auth.getName());
+    }
+
+    @PostMapping("/{id}/profile")
+    public DistributorProfileDTO updateProfile(@PathVariable Long id,
+                                @RequestBody DistributorProfileDTO dto,
+                                Authentication auth) {
+        return service.updateProfile(id, auth.getName(), dto);
+    }
+    @PostMapping("/transfer/{cropId}/{distributorId}")
+    public String transferCrop(@PathVariable Long cropId,
+                               @PathVariable Long distributorId) {
+
+        cropService.transferOwnership(cropId, "DISTRIBUTOR", distributorId);
+        return "Crop ownership transferred to Distributor successfully";
+    }
+}
