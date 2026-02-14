@@ -1,0 +1,43 @@
+/* Base Layout */
+.charts-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.chart-wrapper {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    flex: 1;
+    min-width: 300px;
+    border: 1px solid #e5e7eb;
+}
+
+.chart-wrapper.full-width {
+    min-width: 100%;
+}
+
+.chart-wrapper h3 {
+    margin-bottom: 1.5rem;
+    color: #374151;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #f3f4f6;
+    padding-bottom: 0.5rem;
+}
+
+.big-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #4f46e5;
+    margin-top: 0.5rem;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}

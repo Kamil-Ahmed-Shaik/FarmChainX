@@ -1,0 +1,11 @@
+.home {
+  height: 100vh;
+  background: url("/farm-bg.png") no-repeat center/cover;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  color: white;
+}

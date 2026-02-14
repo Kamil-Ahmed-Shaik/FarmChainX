@@ -1,0 +1,68 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Backend (Java/Maven)
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/.settings/
+backend/.classpath
+backend/.project
+
+# Frontend (Node/React)
+frontend_2/node_modules/
+frontend_2/dist/
+frontend_2/build/
+frontend_2/.env.local
+frontend_2/.env.*.local
+frontend_2/package-lock.json
+frontend_2/yarn.lock
+
+# Python
+ai_service/__pycache__/
+ai_service/*.pyc
+ai_service/*.pyo
+ai_service/*.pyd
+ai_service/.Python
+ai_service/venv/
+ai_service/env/
+ai_service/.env
+ai_service/models/*.pkl
+ai_service/models/*.pth
+ai_service/.pytest_cache/
+
+# PyTorch hub cache
+.cache/
+torch/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sql
+*.db
+
+# Secrets
+.env
+*.key
+*.pem
+application-local.properties
+
+# OS
+.Trash/
+$RECYCLE.BIN/
+
+# Temporary
+*.tmp
+*.temp
+~*

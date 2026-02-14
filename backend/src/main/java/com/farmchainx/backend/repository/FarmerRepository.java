@@ -1,0 +1,10 @@
+package com.farmchainx.backend.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.*;
+import com.farmchainx.backend.entity.Farmer;
+
+public interface FarmerRepository extends JpaRepository<Farmer, Long> {
+
+	List<Farmer> findByStatus(String string);
+}
